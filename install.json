@@ -1,5 +1,5 @@
 {
   "packageManager": "python",
-  "packageName": "jupyter-cli",
-  "uninstallInstructions": "pip uninstall jupyter-cli"
+  "packageName": "jupyterlab-cli",
+  "uninstallInstructions": "pip uninstall jupyterlab-cli"
 }

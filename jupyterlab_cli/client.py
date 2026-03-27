@@ -1,4 +1,4 @@
-"""HTTP client for jupyter-cli server extension."""
+"""HTTP client for jupyterlab-cli server extension."""
 
 from __future__ import annotations
 
@@ -7,10 +7,10 @@ from typing import Any, Iterator, Optional
 
 import requests
 
-SESSION_HEADER = "X-Jupyter-CLI-Session"
+SESSION_HEADER = "X-JupyterLab-CLI-Session"
 
 
-class JupyterCliClient:
+class JupyterLabCliClient:
     def __init__(self, server_url: str, token: str, session_id: str) -> None:
         self.server_url = server_url.rstrip("/")
         self.token = token
@@ -29,18 +29,18 @@ class JupyterCliClient:
         return self.server_url + path
 
     def health(self) -> dict[str, Any]:
-        r = self._s.get(self._url("/jupyter-cli/healthz"), params=self._params(), headers=self._headers(), timeout=30)
+        r = self._s.get(self._url("/jupyterlab-cli/healthz"), params=self._params(), headers=self._headers(), timeout=30)
         r.raise_for_status()
         return r.json()
 
     def list_sessions(self) -> dict[str, Any]:
-        r = self._s.get(self._url("/jupyter-cli/sessions"), params=self._params(), headers=self._headers(), timeout=60)
+        r = self._s.get(self._url("/jupyterlab-cli/sessions"), params=self._params(), headers=self._headers(), timeout=60)
         r.raise_for_status()
         return r.json()
 
     def use_notebook(self, notebook_path: str, *, force: bool = False, parents: bool = False) -> dict[str, Any]:
         r = self._s.post(
-            self._url("/jupyter-cli/sessions"),
+            self._url("/jupyterlab-cli/sessions"),
             params=self._params(),
             headers=self._headers(),
             json={"notebook_path": notebook_path, "force": force, "parents": parents},
@@ -53,7 +53,7 @@ class JupyterCliClient:
 
     def unuse_notebook(self) -> None:
         r = self._s.delete(
-            self._url(f"/jupyter-cli/sessions/{self.session_id}"),
+            self._url(f"/jupyterlab-cli/sessions/{self.session_id}"),
             params=self._params(),
             headers=self._headers(),
             timeout=60,
@@ -63,7 +63,7 @@ class JupyterCliClient:
 
     def read_notebook(self, fmt: str = "brief") -> dict[str, Any]:
         r = self._s.get(
-            self._url(f"/jupyter-cli/sessions/{self.session_id}/notebook"),
+            self._url(f"/jupyterlab-cli/sessions/{self.session_id}/notebook"),
             params={**self._params(), "format": fmt},
             headers=self._headers(),
             timeout=60,
@@ -76,7 +76,7 @@ class JupyterCliClient:
         if index is not None:
             body["index"] = index
         r = self._s.post(
-            self._url(f"/jupyter-cli/sessions/{self.session_id}/cells"),
+            self._url(f"/jupyterlab-cli/sessions/{self.session_id}/cells"),
             params=self._params(),
             headers=self._headers(),
             json=body,
@@ -90,7 +90,7 @@ class JupyterCliClient:
         if no_outputs:
             params["no_outputs"] = "1"
         r = self._s.get(
-            self._url(f"/jupyter-cli/sessions/{self.session_id}/cells/{index}"),
+            self._url(f"/jupyterlab-cli/sessions/{self.session_id}/cells/{index}"),
             params=params,
             headers=self._headers(),
             timeout=60,
@@ -100,7 +100,7 @@ class JupyterCliClient:
 
     def update_cell(self, index: int, content: str) -> dict[str, Any]:
         r = self._s.put(
-            self._url(f"/jupyter-cli/sessions/{self.session_id}/cells/{index}"),
+            self._url(f"/jupyterlab-cli/sessions/{self.session_id}/cells/{index}"),
             params=self._params(),
             headers=self._headers(),
             json={"content": content},
@@ -111,7 +111,7 @@ class JupyterCliClient:
 
     def delete_cell(self, index: int) -> None:
         r = self._s.delete(
-            self._url(f"/jupyter-cli/sessions/{self.session_id}/cells/{index}"),
+            self._url(f"/jupyterlab-cli/sessions/{self.session_id}/cells/{index}"),
             params=self._params(),
             headers=self._headers(),
             timeout=60,
@@ -129,7 +129,7 @@ class JupyterCliClient:
         if timeout is not None:
             body["timeout"] = timeout
         r = self._s.post(
-            self._url(f"/jupyter-cli/sessions/{self.session_id}/execute-cell"),
+            self._url(f"/jupyterlab-cli/sessions/{self.session_id}/execute-cell"),
             params=self._params(),
             headers=self._headers(),
             json=body,
@@ -152,7 +152,7 @@ class JupyterCliClient:
         if timeout is not None:
             body["timeout"] = timeout
         r = self._s.post(
-            self._url(f"/jupyter-cli/sessions/{self.session_id}/execute-code"),
+            self._url(f"/jupyterlab-cli/sessions/{self.session_id}/execute-code"),
             params=self._params(),
             headers=self._headers(),
             json=body,
@@ -165,13 +165,13 @@ class JupyterCliClient:
         return r.json()
 
     def list_kernels(self) -> dict[str, Any]:
-        r = self._s.get(self._url("/jupyter-cli/kernels"), params=self._params(), headers=self._headers(), timeout=60)
+        r = self._s.get(self._url("/jupyterlab-cli/kernels"), params=self._params(), headers=self._headers(), timeout=60)
         r.raise_for_status()
         return r.json()
 
     def restart_kernel(self) -> dict[str, Any]:
         r = self._s.post(
-            self._url(f"/jupyter-cli/sessions/{self.session_id}/restart"),
+            self._url(f"/jupyterlab-cli/sessions/{self.session_id}/restart"),
             params=self._params(),
             headers=self._headers(),
             timeout=120,
@@ -181,7 +181,7 @@ class JupyterCliClient:
 
     def list_files(self, path: str = "", pattern: str = "*") -> dict[str, Any]:
         r = self._s.get(
-            self._url("/jupyter-cli/files"),
+            self._url("/jupyterlab-cli/files"),
             params={**self._params(), "path": path, "pattern": pattern},
             headers=self._headers(),
             timeout=60,

@@ -2,7 +2,7 @@ import { PageConfig } from '@jupyterlab/coreutils';
 import { ISettingRegistry } from '@jupyterlab/settingregistry';
 import type { ITerminalTracker } from '@jupyterlab/terminal';
 
-const PLUGIN_ID = 'jupyter-cli-frontend:clipboard-image';
+const PLUGIN_ID = 'jupyterlab-cli-frontend:clipboard-image';
 
 export async function activateClipboardImage(
   settingRegistry: ISettingRegistry,
@@ -41,7 +41,7 @@ export async function activateClipboardImage(
             continue;
           }
           const buf = await blob.arrayBuffer();
-          const r = await fetch(`${base}jupyter-cli/clipboard/image?token=${encodeURIComponent(token || '')}`, {
+          const r = await fetch(`${base}jupyterlab-cli/clipboard/image?token=${encodeURIComponent(token || '')}`, {
             method: 'POST',
             body: buf,
             headers: { 'Content-Type': 'application/octet-stream' },

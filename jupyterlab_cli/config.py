@@ -7,14 +7,14 @@ import os
 from pathlib import Path
 from typing import Any, Optional
 
-ENV_SERVER_URL = "JUPYTER_CLI_SERVER_URL"
-ENV_TOKEN = "JUPYTER_CLI_TOKEN"
-ENV_SESSION = "JUPYTER_CLI_SESSION"
+ENV_SERVER_URL = "JUPYTERLAB_CLI_SERVER_URL"
+ENV_TOKEN = "JUPYTERLAB_CLI_TOKEN"
+ENV_SESSION = "JUPYTERLAB_CLI_SESSION"
 
 
 def config_dir() -> Path:
     base = os.environ.get("XDG_CONFIG_HOME", str(Path.home() / ".config"))
-    return Path(base) / "jupyter-cli"
+    return Path(base) / "jupyterlab-cli"
 
 
 def config_path() -> Path:

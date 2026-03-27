@@ -15,14 +15,14 @@ class FrontendBridge:
 
     def register(self, ws: Any) -> None:
         self._connections.append(ws)
-        logger.debug("jupyter-cli WS client connected (%s total)", len(self._connections))
+        logger.debug("jupyterlab-cli WS client connected (%s total)", len(self._connections))
 
     def unregister(self, ws: Any) -> None:
         try:
             self._connections.remove(ws)
         except ValueError:
             pass
-        logger.debug("jupyter-cli WS client disconnected (%s total)", len(self._connections))
+        logger.debug("jupyterlab-cli WS client disconnected (%s total)", len(self._connections))
 
     def broadcast(self, payload: dict[str, Any]) -> None:
         raw = json.dumps(payload)

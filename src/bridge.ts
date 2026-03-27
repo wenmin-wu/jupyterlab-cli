@@ -3,7 +3,7 @@ import { IDocumentManager } from '@jupyterlab/docmanager';
 import { PageConfig } from '@jupyterlab/coreutils';
 
 /**
- * Connect to /jupyter-cli/ws and reload notebooks when the server broadcasts updates.
+ * Connect to /jupyterlab-cli/ws and reload notebooks when the server broadcasts updates.
  */
 export function activateBridge(
   app: JupyterFrontEnd,
@@ -12,7 +12,7 @@ export function activateBridge(
   const token = PageConfig.getToken();
   const base = PageConfig.getBaseUrl();
   const proto = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-  const url = `${proto}//${window.location.host}${base}jupyter-cli/ws?token=${encodeURIComponent(
+  const url = `${proto}//${window.location.host}${base}jupyterlab-cli/ws?token=${encodeURIComponent(
     token || ''
   )}`;
 
@@ -20,7 +20,7 @@ export function activateBridge(
   try {
     ws = new WebSocket(url);
   } catch (e) {
-    console.warn('jupyter-cli bridge: WebSocket failed', e);
+    console.warn('jupyterlab-cli bridge: WebSocket failed', e);
     return;
   }
 

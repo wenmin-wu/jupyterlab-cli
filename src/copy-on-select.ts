@@ -1,7 +1,7 @@
 import { ISettingRegistry } from '@jupyterlab/settingregistry';
 import type { ITerminalTracker } from '@jupyterlab/terminal';
 
-const PLUGIN_ID = 'jupyter-cli-frontend:copy-on-select';
+const PLUGIN_ID = 'jupyterlab-cli-frontend:copy-on-select';
 
 export async function activateCopyOnSelect(
   settingRegistry: ISettingRegistry,

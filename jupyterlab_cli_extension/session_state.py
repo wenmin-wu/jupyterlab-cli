@@ -1,11 +1,11 @@
-"""Server-side session and lock state for jupyter-cli."""
+"""Server-side session and lock state for jupyterlab-cli."""
 
 from __future__ import annotations
 
 from dataclasses import dataclass
 from typing import Any, Dict, Optional
 
-from jupyter_cli_extension.lock import LockRegistry
+from jupyterlab_cli_extension.lock import LockRegistry
 
 
 @dataclass
@@ -38,8 +38,8 @@ class SessionState:
 
 
 def get_state(handler: Any) -> SessionState:
-    return handler.settings["jupyter_cli_state"]
+    return handler.settings["jupyterlab_cli_state"]
 
 
 def get_bridge(handler: Any) -> Any:
-    return handler.settings["jupyter_cli_bridge"]
+    return handler.settings["jupyterlab_cli_bridge"]

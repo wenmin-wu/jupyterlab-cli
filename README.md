@@ -1,4 +1,4 @@
-# jupyter-cli
+# jupyterlab-cli
 
 A CLI tool and JupyterLab extension for AI agents to manage Jupyter notebooks. Every CLI command is a single HTTP call — no local state. The package also ships frontend plugins for terminal copy-on-select, browser-to-server clipboard image sync, and a “Copy Context” button for notebook cells.
 
@@ -8,15 +8,15 @@ A CLI tool and JupyterLab extension for AI agents to manage Jupyter notebooks. E
 ┌─────────────────────────────────────────────────────────────┐
 │ JupyterLab Server Process                                   │
 │                                                             │
-│  jupyter_cli_extension (server extension)                 │
-│    REST handlers: /jupyter-cli/* (Tornado)                  │
+│  jupyterlab_cli_extension (server extension)                 │
+│    REST handlers: /jupyterlab-cli/* (Tornado)                  │
 │    Lock registry: in-memory, one lock per notebook          │
 │    contents_manager: notebook read/write                    │
 │    kernel_manager: kernel start/execute/restart           │
 │    Frontend bridge: WebSocket relay to browser             │
-│    Clipboard handler: POST /jupyter-cli/clipboard/image    │
+│    Clipboard handler: POST /jupyterlab-cli/clipboard/image    │
 │                                                             │
-│  jupyter-cli-frontend (labextension)                       │
+│  jupyterlab-cli-frontend (labextension)                       │
 │    Frontend bridge plugin: routes cell ops via browser      │
 │    Copy-on-select plugin: terminal text → clipboard         │
 │    Clipboard image plugin: browser image → server file      │
@@ -25,16 +25,16 @@ A CLI tool and JupyterLab extension for AI agents to manage Jupyter notebooks. E
 │  Streaming SSE: execute-cell / execute-code                 │
 └─────────────────────────────────────────────────────────────┘
 
-jupyter-cli (CLI) — pure HTTP client, stateless
+jupyterlab-cli (CLI) — pure HTTP client, stateless
 ```
 
 ## How it works
 
-1. **Server extension (`jupyter_cli_extension/`)** — A Python package that registers Tornado HTTP handlers on the running Jupyter server. It manages sessions, notebook locks, cell CRUD, and kernel execution. It communicates with the browser via a WebSocket bridge so cell operations update the JupyterLab UI in real time.
+1. **Server extension (`jupyterlab_cli_extension/`)** — A Python package that registers Tornado HTTP handlers on the running Jupyter server. It manages sessions, notebook locks, cell CRUD, and kernel execution. It communicates with the browser via a WebSocket bridge so cell operations update the JupyterLab UI in real time.
 
-2. **Frontend extension (`src/` → `jupyter_cli_extension/labextension/`)** — TypeScript plugins compiled into a JupyterLab labextension. It handles the browser-side WebSocket bridge, terminal enhancements (copy-on-select and clipboard image sync), and a “Copy Context” floating button.
+2. **Frontend extension (`src/` → `jupyterlab_cli_extension/labextension/`)** — TypeScript plugins compiled into a JupyterLab labextension. It handles the browser-side WebSocket bridge, terminal enhancements (copy-on-select and clipboard image sync), and a “Copy Context” floating button.
 
-3. **CLI (`jupyter_cli/`)** — A Click-based command-line tool that makes HTTP calls to the server extension. It is stateless; all state lives on the server. It supports human-readable (rich) and machine-readable (`--json`) output.
+3. **CLI (`jupyterlab_cli/`)** — A Click-based command-line tool that makes HTTP calls to the server extension. It is stateless; all state lives on the server. It supports human-readable (rich) and machine-readable (`--json`) output.
 
 ## Installation
 
@@ -43,43 +43,43 @@ jupyter-cli (CLI) — pure HTTP client, stateless
 Install the published package (CLI + server extension + bundled JupyterLab frontend). **You do not need Node.js** on the machine where you run `pip install`.
 
 ```bash
-pip install jupyter-cli
+pip install jupyterlab-cli
 ```
 
 Upgrade to the latest release:
 
 ```bash
-pip install -U jupyter-cli
+pip install -U jupyterlab-cli
 ```
 
 **Includes**
 
-- Command-line tool: `jupyter-cli`
-- Jupyter **server extension**: `jupyter_cli_extension` (REST + WebSocket under `/jupyter-cli/…`)
-- **JupyterLab labextension** (`jupyter-cli-frontend`), shipped inside the wheel
+- Command-line tool: `jupyterlab-cli`
+- Jupyter **server extension**: `jupyterlab_cli_extension` (REST + WebSocket under `/jupyterlab-cli/…`)
+- **JupyterLab labextension** (`jupyterlab-cli-frontend`), shipped inside the wheel
 
 **Requires:** Python 3.10+.
 
-**PyPI:** [pypi.org/project/jupyter-cli](https://pypi.org/project/jupyter-cli)
+**PyPI:** [pypi.org/project/jupyterlab-cli](https://pypi.org/project/jupyterlab-cli)
 
 Use a virtual environment or Conda env where you also install **JupyterLab** (or at least `jupyter-server`) on the host that runs the notebook server, then start JupyterLab as usual—the extension is registered with the server.
 
 ### Verify after install
 
 ```bash
-jupyter server extension list | grep jupyter_cli
-jupyter labextension list | grep jupyter-cli-frontend
+jupyter server extension list | grep jupyterlab_cli
+jupyter labextension list | grep jupyterlab-cli-frontend
 ```
 
-If the server extension does not appear, ensure you are using the same Python environment where `jupyter-cli` is installed, or run `jupyter server extension enable jupyter_cli_extension` (usually not needed when installing from the wheel).
+If the server extension does not appear, ensure you are using the same Python environment where `jupyterlab-cli` is installed, or run `jupyter server extension enable jupyterlab_cli_extension` (usually not needed when installing from the wheel).
 
 ### Install from a local checkout (development)
 
 Installing from the repository builds the frontend during packaging via [hatch-jupyter-builder](https://github.com/jupyterlab/hatch-jupyter-builder) (`jlpm build:prod`). **Build-time:** Node.js + `jlpm` must be available (see `pyproject.toml`).
 
 ```bash
-git clone https://github.com/wenmin-wu/jupyter-cli.git
-cd jupyter-cli
+git clone https://github.com/wenmin-wu/jupyterlab-cli.git
+cd jupyterlab-cli
 pip install -e .
 ```
 
@@ -109,7 +109,7 @@ python -m build --wheel
 Install the produced wheel:
 
 ```bash
-pip install dist/jupyter_cli-*-py3-none-any.whl
+pip install dist/jupyterlab_cli-*-py3-none-any.whl
 ```
 
 ## Quick start
@@ -123,70 +123,70 @@ pip install dist/jupyter_cli-*-py3-none-any.whl
 2. **Configure the CLI** (one-time, interactive)
 
    ```bash
-   jupyter-cli configure
+   jupyterlab-cli configure
    ```
 
 3. **Verify connection**
 
    ```bash
-   jupyter-cli status
+   jupyterlab-cli status
    ```
 
 4. **Set your agent’s session**
 
    ```bash
-   export JUPYTER_CLI_SESSION=my-task
+   export JUPYTERLAB_CLI_SESSION=my-task
    ```
 
 5. **Attach to a notebook**
 
    ```bash
-   jupyter-cli use-notebook notebooks/analysis.ipynb --parents
+   jupyterlab-cli use-notebook notebooks/analysis.ipynb --parents
    ```
 
 6. **Work with cells**
 
    ```bash
-   jupyter-cli add-cell --type code --content 'import pandas as pd'
-   jupyter-cli execute-cell --index 0
+   jupyterlab-cli add-cell --type code --content 'import pandas as pd'
+   jupyterlab-cli execute-cell --index 0
    ```
 
 7. **Release the lock when done**
 
    ```bash
-   jupyter-cli unuse-notebook
+   jupyterlab-cli unuse-notebook
    ```
 
 ## Configuration
 
-- Config is stored in `~/.config/jupyter-cli/config.json` (XDG-compliant).
+- Config is stored in `~/.config/jupyterlab-cli/config.json` (XDG-compliant).
 - **Resolution order:** CLI flags → environment variables → config file.
 
 **Interactive setup** (prompts with current values as defaults):
 
 ```bash
-jupyter-cli configure
+jupyterlab-cli configure
 ```
 
 **Non-interactive setup:**
 
 ```bash
-jupyter-cli configure --server-url http://localhost:8888 --token mytoken
+jupyterlab-cli configure --server-url http://localhost:8888 --token mytoken
 ```
 
 **Show current config:**
 
 ```bash
-jupyter-cli configure --show
+jupyterlab-cli configure --show
 ```
 
 ### Environment variables
 
 | Environment variable     | Purpose              | Default              |
 | ------------------------ | -------------------- | -------------------- |
-| `JUPYTER_CLI_SERVER_URL` | JupyterLab server URL | `http://localhost:8888` |
-| `JUPYTER_CLI_TOKEN`      | Server auth token    | (empty)              |
-| `JUPYTER_CLI_SESSION`    | Session ID for agent | Current PID          |
+| `JUPYTERLAB_CLI_SERVER_URL` | JupyterLab server URL | `http://localhost:8888` |
+| `JUPYTERLAB_CLI_TOKEN`      | Server auth token    | (empty)              |
+| `JUPYTERLAB_CLI_SESSION`    | Session ID for agent | Current PID          |
 
 ## Commands
 
@@ -235,8 +235,8 @@ jupyter-cli configure --show
 Use `--json` **before** the subcommand for machine-readable output:
 
 ```bash
-jupyter-cli --json status
-jupyter-cli --json read-cell --index 0
+jupyterlab-cli --json status
+jupyterlab-cli --json read-cell --index 0
 ```
 
 ## Session management
@@ -245,16 +245,16 @@ Multiple agents can work on **different** notebooks concurrently. A notebook can
 
 ```bash
 # Agent A locks notebook1
-JUPYTER_CLI_SESSION=agent-a jupyter-cli use-notebook notebook1.ipynb
+JUPYTERLAB_CLI_SESSION=agent-a jupyterlab-cli use-notebook notebook1.ipynb
 
 # Agent B locks notebook2 — OK
-JUPYTER_CLI_SESSION=agent-b jupyter-cli use-notebook notebook2.ipynb
+JUPYTERLAB_CLI_SESSION=agent-b jupyterlab-cli use-notebook notebook2.ipynb
 
 # Agent C tries notebook1 — blocked (409)
-JUPYTER_CLI_SESSION=agent-c jupyter-cli use-notebook notebook1.ipynb
+JUPYTERLAB_CLI_SESSION=agent-c jupyterlab-cli use-notebook notebook1.ipynb
 
 # Override a stale lock
-JUPYTER_CLI_SESSION=agent-c jupyter-cli use-notebook notebook1.ipynb --force
+JUPYTERLAB_CLI_SESSION=agent-c jupyterlab-cli use-notebook notebook1.ipynb --force
 ```
 
 ## Frontend plugins
@@ -263,7 +263,7 @@ The labextension ships four plugins, all auto-enabled on install:
 
 ### Frontend bridge
 
-Routes `jupyter-cli` cell operations through the browser via WebSocket so JupyterLab’s UI updates in real time when cells are added, modified, or executed.
+Routes `jupyterlab-cli` cell operations through the browser via WebSocket so JupyterLab’s UI updates in real time when cells are added, modified, or executed.
 
 ### Terminal copy-on-select
 
@@ -302,7 +302,7 @@ Paste this into a Claude Code terminal to provide structured context.
 `execute-cell` and `execute-code` stream output via SSE (Server-Sent Events) as it arrives:
 
 ```bash
-jupyter-cli execute-cell --index 2
+jupyterlab-cli execute-cell --index 2
 #  0%|          | 0/100 [00:00<?, ?it/s]
 # 10%|█         | 10/100 [00:01<00:09]
 # [done] ok (10.23s)
@@ -311,7 +311,7 @@ jupyter-cli execute-cell --index 2
 Use `--no-stream` to buffer output and save images to files:
 
 ```bash
-jupyter-cli execute-cell --index 2 --no-stream
+jupyterlab-cli execute-cell --index 2 --no-stream
 # Output saved to /tmp/a1b2c3d4e5f6/
 #  /tmp/a1b2c3d4e5f6/1.txt
 #  /tmp/a1b2c3d4e5f6/2.png
@@ -321,30 +321,30 @@ jupyter-cli execute-cell --index 2 --no-stream
 
 | Method | Path | Description |
 | ------ | ---- | ----------- |
-| GET | `/jupyter-cli/healthz` | Health check |
-| GET | `/jupyter-cli/sessions` | List sessions |
-| POST | `/jupyter-cli/sessions` | use-notebook |
-| DELETE | `/jupyter-cli/sessions/{id}` | unuse-notebook |
-| GET | `/jupyter-cli/sessions/{id}/notebook` | Read notebook |
-| POST | `/jupyter-cli/sessions/{id}/cells` | Add cell |
-| GET | `/jupyter-cli/sessions/{id}/cells/{n}` | Read cell |
-| PUT | `/jupyter-cli/sessions/{id}/cells/{n}` | Update cell |
-| DELETE | `/jupyter-cli/sessions/{id}/cells/{n}` | Delete cell |
-| POST | `/jupyter-cli/sessions/{id}/execute-cell` | Execute cell (SSE) |
-| POST | `/jupyter-cli/sessions/{id}/execute-code` | Execute code (SSE) |
-| POST | `/jupyter-cli/sessions/{id}/restart` | Restart kernel |
-| GET | `/jupyter-cli/kernels` | List kernels |
-| GET | `/jupyter-cli/files` | List files |
-| POST | `/jupyter-cli/clipboard/image` | Upload clipboard image |
-| WS | `/jupyter-cli/ws` | Frontend bridge WebSocket |
+| GET | `/jupyterlab-cli/healthz` | Health check |
+| GET | `/jupyterlab-cli/sessions` | List sessions |
+| POST | `/jupyterlab-cli/sessions` | use-notebook |
+| DELETE | `/jupyterlab-cli/sessions/{id}` | unuse-notebook |
+| GET | `/jupyterlab-cli/sessions/{id}/notebook` | Read notebook |
+| POST | `/jupyterlab-cli/sessions/{id}/cells` | Add cell |
+| GET | `/jupyterlab-cli/sessions/{id}/cells/{n}` | Read cell |
+| PUT | `/jupyterlab-cli/sessions/{id}/cells/{n}` | Update cell |
+| DELETE | `/jupyterlab-cli/sessions/{id}/cells/{n}` | Delete cell |
+| POST | `/jupyterlab-cli/sessions/{id}/execute-cell` | Execute cell (SSE) |
+| POST | `/jupyterlab-cli/sessions/{id}/execute-code` | Execute code (SSE) |
+| POST | `/jupyterlab-cli/sessions/{id}/restart` | Restart kernel |
+| GET | `/jupyterlab-cli/kernels` | List kernels |
+| GET | `/jupyterlab-cli/files` | List files |
+| POST | `/jupyterlab-cli/clipboard/image` | Upload clipboard image |
+| WS | `/jupyterlab-cli/ws` | Frontend bridge WebSocket |
 
 ## Project structure
 
-Python HTTP/WebSocket handlers are implemented in `jupyter_cli_extension/routes.py` (the tree below matches the original modular layout; split into separate files if you prefer).
+Python HTTP/WebSocket handlers are implemented in `jupyterlab_cli_extension/routes.py` (the tree below matches the original modular layout; split into separate files if you prefer).
 
 ```
-jupyter-cli/
-├── jupyter_cli/                 # CLI (client-side)
+jupyterlab-cli/
+├── jupyterlab_cli/                 # CLI (client-side)
 │   ├── cli.py                   # Click entry point, configure, status
 │   ├── client.py                # HTTP client (requests)
 │   ├── config.py                # Config file + env var resolution
@@ -354,7 +354,7 @@ jupyter-cli/
 │       ├── cell.py
 │       ├── execute.py
 │       └── kernel.py
-├── jupyter_cli_extension/       # Server extension
+├── jupyterlab_cli_extension/       # Server extension
 │   ├── extension.py             # ExtensionApp, handler registration
 │   ├── lock.py                  # Session lock registry
 │   ├── kernel_ops.py            # Kernel execution helpers

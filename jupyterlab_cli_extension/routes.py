@@ -1,4 +1,4 @@
-"""Tornado handlers for /jupyter-cli/* REST API and WebSocket bridge."""
+"""Tornado handlers for /jupyterlab-cli/* REST API and WebSocket bridge."""
 
 from __future__ import annotations
 
@@ -17,13 +17,13 @@ from nbformat.v4 import new_code_cell, new_markdown_cell, new_raw_cell
 from tornado.web import HTTPError, authenticated
 from tornado.websocket import WebSocketHandler
 
-from jupyter_cli_extension import kernel_ops
-from jupyter_cli_extension.notebook_utils import ensure_parent_dirs, load_notebook_node, save_notebook_node
-from jupyter_cli_extension.session_state import SessionInfo, get_bridge, get_state
+from jupyterlab_cli_extension import kernel_ops
+from jupyterlab_cli_extension.notebook_utils import ensure_parent_dirs, load_notebook_node, save_notebook_node
+from jupyterlab_cli_extension.session_state import SessionInfo, get_bridge, get_state
 
 logger = logging.getLogger(__name__)
 
-SESSION_HEADER = "X-Jupyter-CLI-Session"
+SESSION_HEADER = "X-JupyterLab-CLI-Session"
 
 
 def _session_from_request(handler: APIHandler) -> str:
@@ -33,7 +33,7 @@ def _session_from_request(handler: APIHandler) -> str:
 def _require_session(handler: APIHandler) -> str:
     sid = _session_from_request(handler)
     if not sid:
-        raise HTTPError(400, "Missing X-Jupyter-CLI-Session header")
+        raise HTTPError(400, "Missing X-JupyterLab-CLI-Session header")
     return sid
 
 
@@ -54,7 +54,7 @@ class HealthHandler(APIHandler):
             json.dumps(
                 {
                     "status": "ok",
-                    "extension": "jupyter_cli_extension",
+                    "extension": "jupyterlab_cli_extension",
                 }
             )
         )
@@ -430,11 +430,11 @@ class BridgeWebSocketHandler(WebSocketHandler):
         if app and app.token and token != app.token:
             self.close(1008, "invalid token")
             return
-        bridge = self.settings["jupyter_cli_bridge"]
+        bridge = self.settings["jupyterlab_cli_bridge"]
         bridge.register(self)
 
     def on_close(self) -> None:
-        bridge = self.settings.get("jupyter_cli_bridge")
+        bridge = self.settings.get("jupyterlab_cli_bridge")
         if bridge:
             bridge.unregister(self)
 

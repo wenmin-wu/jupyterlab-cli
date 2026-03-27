@@ -1,4 +1,4 @@
-"""Click entry point for jupyter-cli."""
+"""Click entry point for jupyterlab-cli."""
 
 from __future__ import annotations
 
@@ -8,9 +8,9 @@ from typing import Any, Dict, Optional
 import click
 import requests
 
-from jupyter_cli.client import JupyterCliClient, parse_sse_lines
-from jupyter_cli import config as cfg
-from jupyter_cli.output import emit
+from jupyterlab_cli.client import JupyterLabCliClient, parse_sse_lines
+from jupyterlab_cli import config as cfg
+from jupyterlab_cli.output import emit
 
 
 def _root_obj(ctx: click.Context) -> Dict[str, Any]:
@@ -18,14 +18,14 @@ def _root_obj(ctx: click.Context) -> Dict[str, Any]:
     return ctx.parent.obj if ctx.parent is not None else ctx.obj
 
 
-def _client(ctx: click.Context) -> JupyterCliClient:
+def _client(ctx: click.Context) -> JupyterLabCliClient:
     o = _root_obj(ctx)
     c = cfg.resolve_config(
         cli_server_url=o.get("server_url"),
         cli_token=o.get("token"),
         cli_session=o.get("session"),
     )
-    return JupyterCliClient(c["server_url"], c["token"], c["session_id"])
+    return JupyterLabCliClient(c["server_url"], c["token"], c["session_id"])
 
 
 @click.group(context_settings={"help_option_names": ["-h", "--help"]})
@@ -41,7 +41,7 @@ def main(
     token: Optional[str],
     session_override: Optional[str],
 ) -> None:
-    """jupyter-cli — manage notebooks via the Jupyter Server extension."""
+    """jupyterlab-cli — manage notebooks via the Jupyter Server extension."""
     ctx.ensure_object(dict)
     ctx.obj["json_mode"] = json_mode
     ctx.obj["server_url"] = server_url
@@ -55,7 +55,7 @@ def main(
 @click.option("--show", is_flag=True)
 @click.pass_context
 def configure_cmd(ctx: click.Context, server_url: Optional[str], token: Optional[str], show: bool) -> None:
-    """Write or display ~/.config/jupyter-cli/config.json"""
+    """Write or display ~/.config/jupyterlab-cli/config.json"""
     ro = _root_obj(ctx)
     if show:
         data = cfg.load_config_file()

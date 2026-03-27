@@ -6,7 +6,7 @@ build/
 .eggs/
 lib/
 node_modules/
-jupyter_cli_extension/labextension/
+jupyterlab_cli_extension/labextension/
 tsconfig.tsbuildinfo
 .DS_Store
 .yarn/cache

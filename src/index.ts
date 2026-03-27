@@ -16,7 +16,7 @@ import { activateCopyContext } from './copy-context';
 import { activateCopyOnSelect } from './copy-on-select';
 
 const plugin: JupyterFrontEndPlugin<void> = {
-  id: 'jupyter-cli-frontend:plugin',
+  id: 'jupyterlab-cli-frontend:plugin',
   autoStart: true,
   requires: [
     IDocumentManager,

@@ -1,8 +1,8 @@
 {
-  "name": "jupyter-cli-frontend",
+  "name": "jupyterlab-cli-frontend",
   "version": "0.1.0",
   "private": true,
-  "description": "JupyterLab frontend for jupyter-cli (bridge, copy-on-select, clipboard image, copy context)",
+  "description": "JupyterLab frontend for jupyterlab-cli (bridge, copy-on-select, clipboard image, copy context)",
   "license": "MIT",
   "author": {
     "name": "Wenmin Wu",
@@ -11,12 +11,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/wenmin-wu/jupyter-cli.git"
+    "url": "https://github.com/wenmin-wu/jupyterlab-cli.git"
   },
   "bugs": {
-    "url": "https://github.com/wenmin-wu/jupyter-cli/issues"
+    "url": "https://github.com/wenmin-wu/jupyterlab-cli/issues"
   },
-  "homepage": "https://github.com/wenmin-wu/jupyter-cli",
+  "homepage": "https://github.com/wenmin-wu/jupyterlab-cli",
   "main": "lib/index.js",
   "style": "style/index.css",
   "scripts": {
@@ -27,7 +27,7 @@
     "build:lib": "tsc --sourceMap",
     "build:lib:prod": "tsc",
     "clean": "rimraf lib tsconfig.tsbuildinfo",
-    "clean:labextension": "rimraf jupyter_cli_extension/labextension",
+    "clean:labextension": "rimraf jupyterlab_cli_extension/labextension",
     "install:extension": "jlpm build",
     "watch": "jupyter labextension watch ."
   },
@@ -53,14 +53,16 @@
   "jupyterlab": {
     "discovery": {
       "server": {
-        "managers": ["pip"],
+        "managers": [
+          "pip"
+        ],
         "base": {
-          "name": "jupyter-cli"
+          "name": "jupyterlab-cli"
         }
       }
     },
     "extension": true,
-    "outputDir": "jupyter_cli_extension/labextension",
+    "outputDir": "jupyterlab_cli_extension/labextension",
     "schemaDir": "schema"
   }
 }

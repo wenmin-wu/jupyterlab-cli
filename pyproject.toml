@@ -3,7 +3,7 @@ requires = ["hatchling>=1.21", "jupyterlab>=4.0.0,<5", "hatch-jupyter-builder>=0
 build-backend = "hatchling.build"
 
 [project]
-name = "jupyter-cli"
+name = "jupyterlab-cli"
 version = "0.1.0"
 description = "CLI and JupyterLab extension for AI agents to manage notebooks over HTTP"
 readme = "README.md"
@@ -33,24 +33,24 @@ dependencies = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/wenmin-wu/jupyter-cli"
-Repository = "https://github.com/wenmin-wu/jupyter-cli"
-Documentation = "https://github.com/wenmin-wu/jupyter-cli#readme"
-Issues = "https://github.com/wenmin-wu/jupyter-cli/issues"
+Homepage = "https://github.com/wenmin-wu/jupyterlab-cli"
+Repository = "https://github.com/wenmin-wu/jupyterlab-cli"
+Documentation = "https://github.com/wenmin-wu/jupyterlab-cli#readme"
+Issues = "https://github.com/wenmin-wu/jupyterlab-cli/issues"
 
 [project.optional-dependencies]
 dev = ["pytest>=7.0", "pytest-asyncio>=0.21"]
 
 [project.scripts]
-jupyter-cli = "jupyter_cli.cli:main"
+jupyterlab-cli = "jupyterlab_cli.cli:main"
 
 [project.entry-points."jupyter_server_extension"]
-jupyter_cli_extension = "jupyter_cli_extension:_jupyter_server_extension_points"
+jupyterlab_cli_extension = "jupyterlab_cli_extension:_jupyter_server_extension_points"
 
 [tool.hatch.build]
 include = [
-  "jupyter_cli/**/*.py",
-  "jupyter_cli_extension/**/*.py",
+  "jupyterlab_cli/**/*.py",
+  "jupyterlab_cli_extension/**/*.py",
   "jupyter-config/**/*.json",
   "install.json",
   "package.json",
@@ -64,15 +64,15 @@ include = [
 
 [tool.hatch.build.targets.wheel.shared-data]
 "jupyter-config/jupyter_server_config.d" = "etc/jupyter/jupyter_server_config.d"
-"jupyter_cli_extension/labextension" = "share/jupyter/labextensions/jupyter-cli-frontend"
-"install.json" = "share/jupyter/labextensions/jupyter-cli-frontend/install.json"
+"jupyterlab_cli_extension/labextension" = "share/jupyter/labextensions/jupyterlab-cli-frontend"
+"install.json" = "share/jupyter/labextensions/jupyterlab-cli-frontend/install.json"
 
 [tool.hatch.build.hooks.jupyter-builder]
 dependencies = ["hatch-jupyter-builder>=0.9"]
 build-function = "hatch_jupyter_builder.npm_builder"
 ensured-targets = [
-  "jupyter_cli_extension/labextension/static/style.js",
-  "jupyter_cli_extension/labextension/package.json",
+  "jupyterlab_cli_extension/labextension/static/style.js",
+  "jupyterlab_cli_extension/labextension/package.json",
 ]
 
 [tool.hatch.build.hooks.jupyter-builder.build-kwargs]
@@ -83,4 +83,4 @@ npm = ["jlpm"]
 build_cmd = "install:extension"
 npm = ["jlpm"]
 source_dir = "src"
-build_dir = "jupyter_cli_extension/labextension"
+build_dir = "jupyterlab_cli_extension/labextension"

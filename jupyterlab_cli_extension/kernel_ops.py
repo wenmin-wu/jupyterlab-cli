@@ -101,7 +101,7 @@ def collect_kernel_execute(
             for mime in ("image/png", "image/jpeg"):
                 if mime in data:
                     if out_dir is None:
-                        out_dir = Path(tempfile.mkdtemp(prefix="jupyter_cli_"))
+                        out_dir = Path(tempfile.mkdtemp(prefix="jupyterlab_cli_"))
                     raw = data[mime]
                     if isinstance(raw, str):
                         blob = base64.b64decode(raw)
