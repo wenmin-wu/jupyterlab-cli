@@ -1,0 +1,13 @@
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
+.eggs/
+lib/
+node_modules/
+jupyter_cli_extension/labextension/
+tsconfig.tsbuildinfo
+.DS_Store
+.yarn/cache
+.yarn/install-state.gz

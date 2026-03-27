@@ -1,0 +1,13 @@
+{
+  "title": "Terminal Copy-on-Select",
+  "description": "Copy selected text in JupyterLab terminals to the clipboard automatically.",
+  "type": "object",
+  "properties": {
+    "enabled": {
+      "type": "boolean",
+      "title": "Enabled",
+      "default": true
+    }
+  },
+  "additionalProperties": false
+}

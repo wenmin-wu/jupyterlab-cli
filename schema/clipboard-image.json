@@ -1,0 +1,13 @@
+{
+  "title": "Terminal Clipboard Image Sync",
+  "description": "Upload pasted images from the clipboard to the server and replace clipboard with the saved path.",
+  "type": "object",
+  "properties": {
+    "enabled": {
+      "type": "boolean",
+      "title": "Enabled",
+      "default": true
+    }
+  },
+  "additionalProperties": false
+}
